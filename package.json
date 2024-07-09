@@ -1,0 +1,35 @@
+{
+    "name": "nodejs-temp",
+    "version": "1.0.0",
+    "description": "A temple typescript with nodejs/express",
+    "main": "src/server.ts",
+    "scripts": {
+        "build": "npx tsc",
+        "start": "nodemon src/server.ts",
+        "dev": "tsc -w & nodemon src/server.ts",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "NDK",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.7.2",
+        "connect-redis": "^7.1.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "mongodb": "^6.7.0",
+        "nodemon": "^3.1.4",
+        "pg": "^8.12.0",
+        "proj4": "^2.11.0",
+        "redis": "^4.6.15",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.5.3",
+        "wkx": "^0.5.0"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.14.10",
+        "@types/pg": "^8.11.6",
+        "@types/proj4": "^2.5.5"
+    }
+}
