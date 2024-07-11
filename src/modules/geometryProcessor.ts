@@ -1,12 +1,7 @@
 import { Pool } from 'pg';
 import proj4 from 'proj4';
 import wkx from 'wkx';
-import { QueryConditions } from '../types';
-
-type Point = {
-    lat: number;
-    lon: number;
-};
+import { Point, QueryConditions } from '../types';
 
 const processGeometryArray = (geomArray: Point[]) => {
     const transformedPoints = geomArray.map(processPoint);

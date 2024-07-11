@@ -46,25 +46,33 @@ const insertOrUpdate = async (
     try {
         const keys = Object.keys(data);
         const queryKeys = Object.keys(queryObject);
-        const queryValues = Object.values(queryObject);
+        if (data['way']) {
+            data['way'] = await processGeometry(data['way'], pool, queryObject);
+        }
+        if (queryObject['way']) {
+            const point = await processGeometry(
+                queryObject['way'],
+                pool,
+                queryObject,
+            );
+            queryObject['way'] = point;
+            queryKeys[queryKeys.indexOf('way')] = 'ST_Astext(way)';
+        }
         const setClause = keys.map((key, i) => `${key} = $${i + 1}`).join(', ');
         const whereClause = queryKeys.length
             ? `WHERE ${queryKeys
                   .map((key, i) => `${key} = $${keys.length + i + 1}`)
                   .join(' AND ')}`
             : '';
-        if (data['way']) {
-            data['way'] = await processGeometry(data['way'], pool, queryObject);
-        }
-
+        const queryValues = Object.values(queryObject);
         const values = Object.values(data);
-        const text =
+        const queryText =
             queryKeys.length > 0
                 ? `UPDATE ${tableName} SET ${setClause} ${whereClause} RETURNING *`
                 : `INSERT INTO ${tableName} (${keys.join(', ')}) VALUES (${keys
                       .map((_, i) => `$${i + 1}`)
                       .join(', ')}) RETURNING *`;
-        const res = await pool.query(text, [...values, ...queryValues]);
+        const res = await pool.query(queryText, [...values, ...queryValues]);
         callback(null, res.rows);
     } catch (err: any) {
         console.error('Error:', err);

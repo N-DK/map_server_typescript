@@ -19,7 +19,6 @@ async function cache(req: Request, res: Response, next: NextFunction) {
                         'The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.',
                 },
                 element: JSON.parse(data),
-                data_from: 'cache',
             });
         } else {
             next();
