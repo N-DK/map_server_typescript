@@ -1,6 +1,7 @@
 import { QueryResult } from 'pg';
-import { insertOrUpdate, query } from '../../config/db/executor';
+import { insert, query, update } from '../../config/db/executor';
 import { QueryConditions, QueryType } from '../../types';
+import { TYPE } from '../../constant';
 
 interface Interpreter {
     get: (
@@ -43,10 +44,9 @@ const interpreter: Interpreter = {
         );
     },
     create: (query, callback) => {
-        return insertOrUpdate(
-            `public.planet_osm_${query.elementType}`,
+        return insert(
+            `public.planet_osm_nodes`,
             query.data,
-            {},
             (err: Error | null, results?: QueryResult<any>[]) => {
                 if (err) return callback(err);
                 return callback(null, results);
@@ -54,8 +54,7 @@ const interpreter: Interpreter = {
         );
     },
     update: (query, callback) => {
-        return insertOrUpdate(
-            `public.planet_osm_${query.elementType}`,
+        return update(
             query.data,
             query.conditions,
             (err: Error | null, results?: QueryResult<any>[]) => {
